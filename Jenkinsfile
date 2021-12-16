@@ -6,11 +6,12 @@ stage('CheckOutCode')
 {
 git branch: 'development ', credentialsId: 'f6d6d507-448d-40bb-bbc6-6698dc726549', url: 'https://github.com/venkatesh85/maven-web-application.git'
 }
-/*
+
 stage('Build')
 {
 sh "${mavenHome}/bin/mvn clean package"
 }
+  /*
 stage('ExcuteSonarQube Report')
 {
 sh "${mavenHome}/bin/mvn sonar:sonar"
