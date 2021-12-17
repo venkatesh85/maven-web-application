@@ -1,0 +1,85 @@
+pipeline
+{
+
+agent any 
+
+tools {
+maven 'maven3.8.4'
+}
+
+triggers{
+pollSCM('* * * * *')
+}
+options{
+    
+timestamps()
+
+buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '3', daysToKeepStr: '', numToKeepStr: '3'))
+}
+stages{
+ 
+  stage('CheckoutCode')
+   {
+     steps{
+     
+     git branch: 'development ', credentialsId:
+   'f6d6d507-448d-40bb-bbc6-6698dc726549', url:
+ 'https://github.com/venkatesh85/maven-web-application.git'
+
+  }
+}
+  
+ stage('Build')
+ {
+  steps{
+  sh "mvn clean package"
+ }
+}
+
+ stage('ExecuteSonarqubeReport')
+ {
+   steps{
+    sh "mvn sonar:sonar"
+}
+}
+  stage('UploadartifactIntoNexus')
+  {
+     
+    steps{
+      sh "mvn deploy"
+}  
+   }
+   
+    stage('DeployAppIntoTomcatserver')
+{
+  steps{
+  sshagent(['544b76c0-0348-4ea6-bedd-e28729d6e1b5']) {
+   sh "rm -rf /opt/apache-tomcat-9.0.54/webapps/maven-web-application.war"
+   sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@3.110.165.162:/opt/apache-tomcat-9.0.54/webapps/"
+
+
+}
+}
+}
+
+
+}
+
+ post{
+
+  success{
+  emailext body: '''Build is over - Declarative 
+
+Regards,
+venkatesh,
+9916412675''', subject: 'Build is successfull - Declarative ', to: 'racharlaanuradha@gmail.com'
+}
+  failure{
+  emailext body: '''Build is failed - Declarative 
+
+Regards,
+venkatesh,
+9916412675''', subject: 'Build is failed - Declarative ', to: 'racharlaanuradha@gmail.com'
+}
+}
+}
