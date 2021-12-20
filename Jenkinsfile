@@ -20,7 +20,7 @@ stage('Build')
 {
 sh "${mavenHome}/bin/mvn clean package"
 }
-  /*
+  
 stage('ExcuteSonarQube Report')
 {
 sh "${mavenHome}/bin/mvn sonar:sonar"
@@ -35,7 +35,6 @@ sshagent(['544b76c0-0348-4ea6-bedd-e28729d6e1b5']) {
 sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@3.110.123.59:/opt/apache-tomcat-9.0.54/webapps/"
 }
 }
-*/
 stage ('SendEmailNotification')
 {
 emailext body: '''Buid Over - ScriptedWay.
