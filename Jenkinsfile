@@ -1,4 +1,4 @@
-node
+node('nodejsinstance')
 {
 def mavenHome = tool name: "maven3.8.4"
 //echo "GitHub BranhName ${env.BRANCH_NAME}"
@@ -32,7 +32,7 @@ sh "${mavenHome}/bin/mvn deploy"
 stage('DeployAppIntoTomcatServer')
 {
 sshagent(['544b76c0-0348-4ea6-bedd-e28729d6e1b5']) {
-sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@3.110.165.162:/opt/apache-tomcat-9.0.54/webapps/"
+sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@3.110.123.59:/opt/apache-tomcat-9.0.54/webapps/"
 }
 }
 */
