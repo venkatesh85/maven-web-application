@@ -8,9 +8,9 @@ def mavenHome = tool name: "maven3.8.4"
   echo "Jenkins Home is: --> ${env.JENKINS_HOME}"
   echo "Jenkins URL is: -->  ${env.JENKINS_URL}"
   echo "JOB Name is: -->  ${env.JOB_NAME}"
-  /*
+  
   properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')), pipelineTriggers([pollSCM('* * * * *')])])
-  */
+ 
 stage('CheckOutCode')
 {
 git branch: 'development ', credentialsId: 'f6d6d507-448d-40bb-bbc6-6698dc726549', url: 'https://github.com/venkatesh85/maven-web-application.git'
